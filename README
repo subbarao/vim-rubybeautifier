@@ -1,0 +1,31 @@
+<pre>
+" -----------------------------------------------------------------------------  
+" |                               Ruby Code Formatter                         |
+" -----------------------------------------------------------------------------  
+fun BenIndent()
+  let oldLine=line('.')
+  " our text (whole file) is passed via STDIN (%) to script name, and the output is
+  " placed in current buffer (STDOUT)
+  if g:IndentStyle == "C"
+    %!indent --gnu-style --no-tabs --indent-level 8 --case-indentation 0 --brace-indent 0 --comment-delimiters-on-blank-lines --start-left-side-of-comments --format-all-comments --format-first-column-comments
+  elseif g:IndentStyle == "perl"
+    %!perltidy -gnu
+  elseif g:IndentStyle == "html"
+    %!tidy -quiet -utf8 -indent -clean -asxhtml
+  elseif g:IndentStyle == "php"
+    %!tidy -quiet -utf8 -indent -clean
+  elseif g:IndentStyle == "ruby"
+    %!~/.vim/ruby/rubybeautifier.rb
+  endif
+  exe ':' . oldLine
+endfun
+map -- :call BenIndent()<CR>
+
+augroup ruby
+  if !exists("autocommands_ruby_loaded")
+    let autocommands_ruby_loaded = 1
+    au BufReadPre *.rb,*.rake,Rakefile,.autotest set sw=3 sts=3 nu | let IndentStyle = "ruby"
+    au BufNewFile *.rb 0r ~/.vim/skeleton/skeleton.rb | let IndentStyle = "ruby"
+  endif
+augroup END
+</pre>
