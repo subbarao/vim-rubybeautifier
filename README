@@ -15,7 +15,7 @@ fun BenIndent()
   elseif g:IndentStyle == "php"
     %!tidy -quiet -utf8 -indent -clean
   elseif g:IndentStyle == "ruby"
-    %!~/.vim/ruby/rubybeautifier.rb
+    %!~/.vim/autoload/ruby/rubybeautifier.rb
   endif
   exe ':' . oldLine
 endfun
